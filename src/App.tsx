@@ -23,7 +23,19 @@ const PAGE_TITLES: Record<PageRoute, string> = {
   contact: `طلب عرض سعر ومعاينة مجانية | ${COMPANY_INFO.brandName}`,
 };
 
-function parseHashRoute(): PageRoute {
+const ROUTE_TO_PATH: Record<PageRoute, string> = {
+  home: '/',
+  services: '/services',
+  projects: '/projects',
+  about: '/about',
+  contact: '/contact',
+};
+
+function parseRouteFromLocation(): PageRoute {
+  const path = window.location.pathname.replace(/^\/+|\/+$/g, '') as PageRoute;
+  if (path && path in PAGE_TITLES) {
+    return path;
+  }
   const hash = window.location.hash.replace('#', '') as PageRoute;
   if (hash && hash in PAGE_TITLES) {
     return hash;
@@ -33,7 +45,7 @@ function parseHashRoute(): PageRoute {
 
 export default function App() {
   const [activePage, setActivePage] = useState<PageRoute>(() =>
-    typeof window !== 'undefined' ? parseHashRoute() : 'home'
+    typeof window !== 'undefined' ? parseRouteFromLocation() : 'home'
   );
   const [prefillEstimate, setPrefillEstimate] =
     useState<EstimateTransferData | null>(null);
@@ -42,21 +54,43 @@ export default function App() {
 
   useEffect(() => {
     document.title = PAGE_TITLES[activePage];
+
+    const currentUrl = window.location.origin + ROUTE_TO_PATH[activePage];
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute('href', currentUrl);
+
+    let ogUrl = document.querySelector('meta[property="og:url"]');
+    if (!ogUrl) {
+      ogUrl = document.createElement('meta');
+      ogUrl.setAttribute('property', 'og:url');
+      document.head.appendChild(ogUrl);
+    }
+    ogUrl.setAttribute('content', currentUrl);
   }, [activePage]);
 
   useEffect(() => {
-    const onHashChange = () => {
-      setActivePage(parseHashRoute());
+    const onLocationChange = () => {
+      setActivePage(parseRouteFromLocation());
     };
-    window.addEventListener('hashchange', onHashChange);
-    return () => window.removeEventListener('hashchange', onHashChange);
+    window.addEventListener('popstate', onLocationChange);
+    window.addEventListener('hashchange', onLocationChange);
+    return () => {
+      window.removeEventListener('popstate', onLocationChange);
+      window.removeEventListener('hashchange', onLocationChange);
+    };
   }, []);
 
   const navigateTo = (page: PageRoute) => {
     setActivePage(page);
     setIsLightboxOpen(false);
-    if (window.location.hash !== `#${page}`) {
-      window.history.pushState(null, '', `#${page}`);
+    const targetPath = ROUTE_TO_PATH[page];
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState(null, '', targetPath);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -97,13 +131,20 @@ export default function App() {
   return (
     <MotionConfig reducedMotion="user">
       <div className="min-h-screen flex flex-col bg-white text-[#0F172A]">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:right-3 focus:z-50 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-[#0B162C] focus:text-white focus:text-xs focus:font-bold"
+        >
+          تخطي إلى المحتوى الرئيسي
+        </a>
+
         <Navbar
           activePage={activePage}
           onNavigate={navigateTo}
           onMenuOpenChange={setIsMobileMenuOpen}
         />
 
-        <main className="flex-1">
+        <main id="main-content" tabIndex={-1} className="flex-1 outline-none">
           <AnimatePresence mode="wait">
             <motion.div
               key={activePage}
@@ -124,17 +165,31 @@ export default function App() {
 
               {activePage === 'services' && (
                 <ServicesView
+                  onNavigate={navigateTo}
                   onSelectServiceForQuote={handleSelectServiceForQuote}
                 />
               )}
 
               {activePage === 'projects' && (
-                <div className="bg-[#F8FAFC] py-12 sm:py-16">
+                <div className="bg-[#F8FAFC] py-10 sm:py-16">
                   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
                     <div className="max-w-3xl space-y-3">
-                      <p className="text-xs font-semibold text-[#B0852B]">
-                        سجل المشاريع
-                      </p>
+                      <nav
+                        aria-label="مسار التنقل"
+                        className="flex items-center gap-2 text-xs text-slate-500"
+                      >
+                        <button
+                          type="button"
+                          onClick={() => navigateTo('home')}
+                          className="hover:text-[#0B162C] transition-colors cursor-pointer"
+                        >
+                          الرئيسية
+                        </button>
+                        <span aria-hidden="true">/</span>
+                        <span className="text-[#B0852B] font-semibold">
+                          سجل المشاريع
+                        </span>
+                      </nav>
                       <h1 className="text-3xl sm:text-4xl font-bold text-[#0B162C]">
                         معرض مشاريع العزل المنجزة في جدة ومكة
                       </h1>
@@ -154,12 +209,25 @@ export default function App() {
               {activePage === 'about' && <AboutView onNavigate={navigateTo} />}
 
               {activePage === 'contact' && (
-                <div className="bg-[#F8FAFC] py-12 sm:py-16">
+                <div className="bg-[#F8FAFC] py-10 sm:py-16">
                   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
                     <div className="max-w-3xl space-y-3">
-                      <p className="text-xs font-semibold text-[#B0852B]">
-                        طلب عرض سعر ومعاينة
-                      </p>
+                      <nav
+                        aria-label="مسار التنقل"
+                        className="flex items-center gap-2 text-xs text-slate-500"
+                      >
+                        <button
+                          type="button"
+                          onClick={() => navigateTo('home')}
+                          className="hover:text-[#0B162C] transition-colors cursor-pointer"
+                        >
+                          الرئيسية
+                        </button>
+                        <span aria-hidden="true">/</span>
+                        <span className="text-[#B0852B] font-semibold">
+                          طلب عرض سعر ومعاينة
+                        </span>
+                      </nav>
                       <h1 className="text-3xl sm:text-4xl font-bold text-[#0B162C]">
                         تواصل مع الفريق الهندسي لشركة بصمة إتقان
                       </h1>
@@ -181,6 +249,7 @@ export default function App() {
 
         <MobileActionBar
           visible={!isMobileMenuOpen && !isLightboxOpen}
+          activePage={activePage}
           onRequestQuote={navigateTo}
         />
       </div>

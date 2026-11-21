@@ -3,6 +3,8 @@ import {
   CheckCircle2,
   Clock,
   Copy,
+  Info,
+  Mail,
   MapPin,
   MessageCircle,
   Phone,
@@ -47,6 +49,7 @@ export function QuoteSection({ prefillEstimate }: QuoteSectionProps) {
     setDistrict(prefillEstimate.district);
     setPropertyType(prefillEstimate.propertyType);
     setArea(String(prefillEstimate.areaSqm));
+    setErrors({});
     setSubmittedSummary(null);
   }, [prefillEstimate]);
 
@@ -105,6 +108,12 @@ export function QuoteSection({ prefillEstimate }: QuoteSectionProps) {
       )}`
     : `https://wa.me/${COMPANY_INFO.whatsappNumber}`;
 
+  const mailtoHref = submittedSummary
+    ? `mailto:${COMPANY_INFO.email}?subject=${encodeURIComponent(
+        `طلب عرض سعر ومعاينة — ${selectedService.shortTitle} (${city})`
+      )}&body=${encodeURIComponent(submittedSummary)}`
+    : COMPANY_INFO.emailHref;
+
   const handleCopy = async () => {
     if (!submittedSummary) return;
     try {
@@ -118,34 +127,34 @@ export function QuoteSection({ prefillEstimate }: QuoteSectionProps) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
       {/* Direct Contact & Coverage Info */}
-      <div className="lg:col-span-5 bg-[#0B162C] text-white rounded-xl p-6 sm:p-8 flex flex-col justify-between">
+      <div className="lg:col-span-5 bg-[#F8FAFC] border border-slate-200 text-[#0B162C] rounded-xl p-6 sm:p-8 flex flex-col justify-between">
         <div className="space-y-8">
           <div>
-            <p className="text-xs font-semibold text-[#C89B3C] mb-2">
+            <p className="text-xs font-semibold text-[#B0852B] mb-2">
               التواصل المباشر والمعاينة
             </p>
-            <h3 className="text-2xl font-bold text-white leading-snug">
+            <h3 className="text-2xl font-bold text-[#0B162C] leading-snug">
               احصل على استشارة هندسية وعرض سعر معتمد لمشروعك
             </h3>
-            <p className="text-sm text-slate-300 mt-3 leading-relaxed">
+            <p className="text-sm text-slate-600 mt-3 leading-relaxed">
               فريقنا الهندسي في جدة ومكة المكرمة جاهز لمعاينة الموقع مجاناً
               واقتراح نظام العزل الأنسب بضمان 10 سنوات.
             </p>
           </div>
 
-          <div className="space-y-5 border-t border-white/10 pt-6">
+          <div className="space-y-5 border-t border-slate-200 pt-6">
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
-                <Phone className="w-5 h-5 text-[#C89B3C]" />
+              <div className="w-10 h-10 rounded-lg bg-white border border-slate-200 flex items-center justify-center shrink-0">
+                <Phone className="w-5 h-5 text-[#B0852B]" />
               </div>
               <div>
-                <p className="text-xs text-slate-400 mb-0.5">
+                <p className="text-xs text-slate-500 mb-0.5">
                   الهاتف المباشر والاستشارات
                 </p>
                 <a
                   href={COMPANY_INFO.phoneHref}
                   dir="ltr"
-                  className="text-base font-bold text-white hover:text-[#C89B3C] transition-colors tabular-nums"
+                  className="text-base font-bold text-[#0B162C] hover:text-[#B0852B] transition-colors tabular-nums"
                 >
                   {COMPANY_INFO.phoneDisplay}
                 </a>
@@ -153,12 +162,30 @@ export function QuoteSection({ prefillEstimate }: QuoteSectionProps) {
             </div>
 
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
-                <MapPin className="w-5 h-5 text-[#C89B3C]" />
+              <div className="w-10 h-10 rounded-lg bg-white border border-slate-200 flex items-center justify-center shrink-0">
+                <Mail className="w-5 h-5 text-[#B0852B]" />
               </div>
               <div>
-                <p className="text-xs text-slate-400 mb-0.5">نطاق التغطية</p>
-                <p className="text-sm font-medium text-white">
+                <p className="text-xs text-slate-500 mb-0.5">
+                  البريد الإلكتروني الرسمي
+                </p>
+                <a
+                  href={COMPANY_INFO.emailHref}
+                  dir="ltr"
+                  className="text-sm font-semibold text-[#0B162C] hover:text-[#B0852B] transition-colors break-all"
+                >
+                  {COMPANY_INFO.email}
+                </a>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-lg bg-white border border-slate-200 flex items-center justify-center shrink-0">
+                <MapPin className="w-5 h-5 text-[#B0852B]" />
+              </div>
+              <div>
+                <p className="text-xs text-slate-500 mb-0.5">نطاق التغطية</p>
+                <p className="text-sm font-medium text-[#0B162C]">
                   جدة (المقر الرئيسي) ومكة المكرمة — جميع الأحياء والمناطق
                   الصناعية
                 </p>
@@ -166,12 +193,12 @@ export function QuoteSection({ prefillEstimate }: QuoteSectionProps) {
             </div>
 
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
-                <Clock className="w-5 h-5 text-[#C89B3C]" />
+              <div className="w-10 h-10 rounded-lg bg-white border border-slate-200 flex items-center justify-center shrink-0">
+                <Clock className="w-5 h-5 text-[#B0852B]" />
               </div>
               <div>
-                <p className="text-xs text-slate-400 mb-0.5">ساعات العمل</p>
-                <p className="text-sm font-medium text-white">
+                <p className="text-xs text-slate-500 mb-0.5">ساعات العمل</p>
+                <p className="text-sm font-medium text-[#0B162C]">
                   {COMPANY_INFO.workingHours}
                 </p>
               </div>
@@ -179,21 +206,24 @@ export function QuoteSection({ prefillEstimate }: QuoteSectionProps) {
           </div>
         </div>
 
-        <div className="pt-8 mt-8 border-t border-white/10">
+        <div className="pt-8 mt-8 border-t border-slate-200">
           <a
             href={`https://wa.me/${COMPANY_INFO.whatsappNumber}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full py-3 px-5 rounded-lg border border-white/20 hover:border-[#C89B3C] text-white text-sm font-semibold flex items-center justify-center gap-2 transition-colors whitespace-nowrap"
+            className="w-full py-3 px-5 rounded-lg bg-white border border-slate-300 hover:border-[#C89B3C] text-[#0B162C] text-sm font-semibold flex items-center justify-center gap-2 transition-colors whitespace-nowrap focus-visible:outline-2 focus-visible:outline-[#C89B3C]"
           >
-            <MessageCircle className="w-4 h-4 text-[#C89B3C]" />
+            <MessageCircle className="w-4 h-4 text-[#B0852B]" />
             <span>محادثة واتساب مباشرة</span>
           </a>
         </div>
       </div>
 
       {/* Form or Confirmed WhatsApp Summary Card */}
-      <div className="lg:col-span-7 bg-white border border-slate-200 rounded-xl p-6 sm:p-8">
+      <div
+        id="quote-form-panel"
+        className="lg:col-span-7 bg-white border border-slate-200 rounded-xl p-6 sm:p-8 scroll-mt-20"
+      >
         {submittedSummary ? (
           <div className="h-full flex flex-col justify-between space-y-6">
             <div className="space-y-4">
@@ -220,46 +250,71 @@ export function QuoteSection({ prefillEstimate }: QuoteSectionProps) {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-4 border-t border-slate-100">
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 py-3.5 px-6 rounded-lg bg-[#C89B3C] hover:bg-[#b88c31] text-[#0B162C] font-bold text-sm flex items-center justify-center gap-2 transition-colors whitespace-nowrap"
-              >
-                <MessageCircle className="w-4 h-4" />
-                <span>إرسال الطلب عبر واتساب الآن</span>
-              </a>
+            <div className="space-y-3 pt-4 border-t border-slate-100">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 py-3.5 px-6 rounded-lg bg-[#C89B3C] hover:bg-[#b88c31] text-[#0B162C] font-bold text-sm flex items-center justify-center gap-2 transition-colors whitespace-nowrap focus-visible:outline-2 focus-visible:outline-[#0B162C]"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span>إرسال الطلب عبر واتساب الآن</span>
+                </a>
 
-              <button
-                type="button"
-                onClick={handleCopy}
-                className="py-3.5 px-5 rounded-lg border border-slate-200 hover:bg-slate-50 text-[#0B162C] font-semibold text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer whitespace-nowrap"
-              >
-                <Copy className="w-4 h-4" />
-                <span>{copied ? 'تم النسخ' : 'نسخ الملخص'}</span>
-              </button>
+                <button
+                  type="button"
+                  onClick={handleCopy}
+                  className="py-3.5 px-5 rounded-lg border border-slate-200 hover:bg-slate-50 text-[#0B162C] font-semibold text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer whitespace-nowrap focus-visible:outline-2 focus-visible:outline-[#C89B3C]"
+                >
+                  <Copy className="w-4 h-4" />
+                  <span>{copied ? 'تم النسخ' : 'نسخ الملخص'}</span>
+                </button>
+              </div>
 
-              <button
-                type="button"
-                onClick={() => setSubmittedSummary(null)}
-                className="py-3.5 px-4 rounded-lg text-slate-600 hover:text-[#0B162C] text-sm font-medium flex items-center justify-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap"
-              >
-                <RotateCcw className="w-4 h-4" />
-                <span>تعديل</span>
-              </button>
+              <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+                <a
+                  href={mailtoHref}
+                  className="text-xs font-semibold text-slate-600 hover:text-[#0B162C] inline-flex items-center gap-1.5 transition-colors"
+                >
+                  <Mail className="w-3.5 h-3.5 text-[#B0852B]" />
+                  <span>أو إرسال عبر البريد الإلكتروني الرسمي</span>
+                </a>
+
+                <button
+                  type="button"
+                  onClick={() => setSubmittedSummary(null)}
+                  className="py-1.5 px-3 rounded-lg text-slate-600 hover:text-[#0B162C] hover:bg-slate-50 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>تعديل البيانات</span>
+                </button>
+              </div>
             </div>
           </div>
         ) : (
           <form onSubmit={handleSubmit} noValidate className="space-y-5">
-            <div className="border-b border-slate-100 pb-4">
+            <div className="border-b border-slate-100 pb-4 space-y-2">
               <h3 className="text-xl font-bold text-[#0B162C]">
                 نموذج طلب عرض سعر ومعاينة مجانية
               </h3>
-              <p className="text-sm text-slate-600 mt-1">
+              <p className="text-sm text-slate-600">
                 أدخل تفاصيل العقار ليتم تجهيز ملخص هندسي منسق وإرساله مباشرة عبر
                 واتساب.
               </p>
+
+              {prefillEstimate && (
+                <div className="mt-2 flex items-center gap-2 rounded-lg bg-slate-50 border border-slate-200 px-3.5 py-2.5 text-xs text-[#0B162C]">
+                  <Info className="w-4 h-4 text-[#B0852B] shrink-0" />
+                  <span>
+                    تم تحديد نظام{' '}
+                    <strong className="font-bold">
+                      {selectedService.shortTitle}
+                    </strong>{' '}
+                    تلقائياً — يمكنك تعديل أي تفاصيل أدناه قبل الإرسال.
+                  </span>
+                </div>
+              )}
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -273,14 +328,25 @@ export function QuoteSection({ prefillEstimate }: QuoteSectionProps) {
                 <input
                   id="quote-name"
                   type="text"
+                  autoComplete="name"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    if (errors.name) {
+                      setErrors((prev) => ({ ...prev, name: undefined }));
+                    }
+                  }}
                   placeholder="مثال: عبدالعزيز الغامدي"
                   aria-invalid={Boolean(errors.name)}
-                  className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg text-[#0F172A] focus:outline-none focus:border-[#C89B3C]"
+                  aria-describedby={errors.name ? 'quote-name-error' : undefined}
+                  className={`w-full px-3.5 py-2.5 text-sm bg-slate-50 border rounded-lg text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#C89B3C]/35 focus:border-[#C89B3C] ${
+                    errors.name ? 'border-red-500' : 'border-slate-200'
+                  }`}
                 />
                 {errors.name && (
-                  <p className="text-xs text-red-600 mt-1">{errors.name}</p>
+                  <p id="quote-name-error" className="text-xs text-red-600 mt-1">
+                    {errors.name}
+                  </p>
                 )}
               </div>
 
@@ -294,15 +360,32 @@ export function QuoteSection({ prefillEstimate }: QuoteSectionProps) {
                 <input
                   id="quote-phone"
                   type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
                   dir="ltr"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) => {
+                    setPhone(e.target.value);
+                    if (errors.phone) {
+                      setErrors((prev) => ({ ...prev, phone: undefined }));
+                    }
+                  }}
                   placeholder="05XXXXXXXX"
                   aria-invalid={Boolean(errors.phone)}
-                  className="w-full px-3.5 py-2.5 text-sm text-right bg-slate-50 border border-slate-200 rounded-lg text-[#0F172A] tabular-nums focus:outline-none focus:border-[#C89B3C]"
+                  aria-describedby={
+                    errors.phone ? 'quote-phone-error' : undefined
+                  }
+                  className={`w-full px-3.5 py-2.5 text-sm text-right bg-slate-50 border rounded-lg text-[#0F172A] tabular-nums focus:outline-none focus:ring-2 focus:ring-[#C89B3C]/35 focus:border-[#C89B3C] ${
+                    errors.phone ? 'border-red-500' : 'border-slate-200'
+                  }`}
                 />
                 {errors.phone && (
-                  <p className="text-xs text-red-600 mt-1">{errors.phone}</p>
+                  <p
+                    id="quote-phone-error"
+                    className="text-xs text-red-600 mt-1"
+                  >
+                    {errors.phone}
+                  </p>
                 )}
               </div>
             </div>
@@ -321,7 +404,7 @@ export function QuoteSection({ prefillEstimate }: QuoteSectionProps) {
                   onChange={(e) =>
                     handleCityChange(e.target.value as 'جدة' | 'مكة المكرمة')
                   }
-                  className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg text-[#0F172A] focus:outline-none focus:border-[#C89B3C]"
+                  className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#C89B3C]/35 focus:border-[#C89B3C]"
                 >
                   <option value="جدة">جدة</option>
                   <option value="مكة المكرمة">مكة المكرمة</option>
@@ -339,7 +422,7 @@ export function QuoteSection({ prefillEstimate }: QuoteSectionProps) {
                   id="quote-district"
                   value={district}
                   onChange={(e) => setDistrict(e.target.value)}
-                  className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg text-[#0F172A] focus:outline-none focus:border-[#C89B3C]"
+                  className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#C89B3C]/35 focus:border-[#C89B3C]"
                 >
                   {CITY_DISTRICTS[city].map((d) => (
                     <option key={d} value={d}>
@@ -364,7 +447,7 @@ export function QuoteSection({ prefillEstimate }: QuoteSectionProps) {
                   onChange={(e) =>
                     setSystemId(e.target.value as InsulationSystemId)
                   }
-                  className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg text-[#0F172A] focus:outline-none focus:border-[#C89B3C]"
+                  className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#C89B3C]/35 focus:border-[#C89B3C]"
                 >
                   {SERVICES_DATA.map((s) => (
                     <option key={s.id} value={s.id}>
@@ -389,7 +472,7 @@ export function QuoteSection({ prefillEstimate }: QuoteSectionProps) {
                       e.target.value as EstimateTransferData['propertyType']
                     )
                   }
-                  className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg text-[#0F172A] focus:outline-none focus:border-[#C89B3C]"
+                  className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#C89B3C]/35 focus:border-[#C89B3C]"
                 >
                   <option value="سكني">سكني</option>
                   <option value="تجاري">تجاري</option>
@@ -408,14 +491,25 @@ export function QuoteSection({ prefillEstimate }: QuoteSectionProps) {
                 <input
                   id="quote-area"
                   type="number"
+                  inputMode="numeric"
                   min={10}
                   value={area}
-                  onChange={(e) => setArea(e.target.value)}
+                  onChange={(e) => {
+                    setArea(e.target.value);
+                    if (errors.area) {
+                      setErrors((prev) => ({ ...prev, area: undefined }));
+                    }
+                  }}
                   aria-invalid={Boolean(errors.area)}
-                  className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg text-[#0F172A] tabular-nums focus:outline-none focus:border-[#C89B3C]"
+                  aria-describedby={errors.area ? 'quote-area-error' : undefined}
+                  className={`w-full px-3.5 py-2.5 text-sm bg-slate-50 border rounded-lg text-[#0F172A] tabular-nums focus:outline-none focus:ring-2 focus:ring-[#C89B3C]/35 focus:border-[#C89B3C] ${
+                    errors.area ? 'border-red-500' : 'border-slate-200'
+                  }`}
                 />
                 {errors.area && (
-                  <p className="text-xs text-red-600 mt-1">{errors.area}</p>
+                  <p id="quote-area-error" className="text-xs text-red-600 mt-1">
+                    {errors.area}
+                  </p>
                 )}
               </div>
             </div>
@@ -433,7 +527,7 @@ export function QuoteSection({ prefillEstimate }: QuoteSectionProps) {
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="مثال: السطح مبلط حالياً أو يوجد تسرب حول فتحات التكييف..."
-                className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg text-[#0F172A] focus:outline-none focus:border-[#C89B3C]"
+                className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#C89B3C]/35 focus:border-[#C89B3C]"
               />
             </div>
 

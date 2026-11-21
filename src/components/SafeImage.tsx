@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ShieldCheck } from 'lucide-react';
 
 interface SafeImageProps {
@@ -17,6 +17,10 @@ export function SafeImage({
   fallbackLabel,
 }: SafeImageProps) {
   const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    setHasError(false);
+  }, [src]);
 
   if (hasError) {
     return (
@@ -38,6 +42,7 @@ export function SafeImage({
       src={src}
       alt={alt}
       loading={loading}
+      decoding="async"
       referrerPolicy="no-referrer"
       onError={() => setHasError(true)}
       className={className}

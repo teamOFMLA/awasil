@@ -9,6 +9,14 @@ interface NavbarProps {
   onMenuOpenChange?: (isOpen: boolean) => void;
 }
 
+const ROUTE_PATHS: Record<PageRoute, string> = {
+  home: '/',
+  services: '/services',
+  projects: '/projects',
+  about: '/about',
+  contact: '/contact',
+};
+
 const NAV_ITEMS: { id: PageRoute; label: string }[] = [
   { id: 'home', label: 'الرئيسية' },
   { id: 'services', label: 'الخدمات' },
@@ -46,35 +54,65 @@ export function Navbar({
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-8">
-        {/* Zone 1: Single-line Brand Wordmark */}
+        {/* Zone 1: Single-line Brand Logo Mark + Wordmark */}
         <a
-          href="#home"
+          href="/"
           onClick={(e) => {
             e.preventDefault();
             handleSelect('home');
           }}
-          className="text-lg sm:text-xl font-bold tracking-tight text-[#0B162C] whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C89B3C]"
+          className="inline-flex items-center gap-2.5 text-lg sm:text-xl font-bold tracking-tight text-[#0B162C] whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C89B3C]"
         >
-          {COMPANY_INFO.brandName}
+          <svg
+            viewBox="220 75 710 490"
+            aria-hidden="true"
+            className="w-8 h-6 shrink-0"
+          >
+            <path d="M285 390 L285 265 L405 195 L405 390 Z" fill="#13294B" />
+            <path d="M405 195 L490 245 L490 390 L405 390 Z" fill="#C89B3C" />
+            <path
+              d="M490 390 L490 160 L600 85 L710 160 L710 390 L620 340 L600 350 L580 340 Z"
+              fill="#0B162C"
+            />
+            <path
+              d="M600 85 L710 160 L710 390 L620 340 L600 350 Z"
+              fill="#C89B3C"
+            />
+            <path
+              d="M235 470 L600 335 L785 445 L752 466 L600 376 L310 486 Z"
+              fill="#0B162C"
+            />
+            <path
+              d="M620 338 C790 340 890 390 910 458 C925 510 855 548 710 555 C850 533 884 486 855 445 C822 397 735 370 620 358 Z"
+              fill="#C89B3C"
+            />
+            <path
+              d="M600 408 C578 444 555 469 555 495 C555 523 575 543 600 543 C625 543 645 523 645 495 C645 469 622 444 600 408 Z"
+              fill="none"
+              stroke="#0B162C"
+              strokeWidth="16"
+            />
+          </svg>
+          <span>{COMPANY_INFO.brandName}</span>
         </a>
 
-        {/* Zone 2: 5 concise single-line nav links */}
+        {/* Zone 2: 4 concise single-line nav links */}
         <nav
           aria-label="التنقل الرئيسي"
-          className="hidden md:flex items-center gap-7"
+          className="hidden md:flex items-center gap-7 h-full"
         >
           {NAV_ITEMS.map((item) => {
             const isActive = activePage === item.id;
             return (
               <a
                 key={item.id}
-                href={`#${item.id}`}
+                href={ROUTE_PATHS[item.id]}
                 onClick={(e) => {
                   e.preventDefault();
                   handleSelect(item.id);
                 }}
                 aria-current={isActive ? 'page' : undefined}
-                className={`relative py-1 text-sm font-medium whitespace-nowrap shrink-0 transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C89B3C] ${
+                className={`relative h-full inline-flex items-center text-sm font-medium whitespace-nowrap shrink-0 transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-[#C89B3C] ${
                   isActive
                     ? 'text-[#0B162C] font-semibold'
                     : 'text-slate-600 hover:text-[#0B162C]'
@@ -86,7 +124,7 @@ export function Navbar({
                     layoutId="nav-active-bar"
                     transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
                     aria-hidden="true"
-                    className="absolute inset-x-0 -bottom-[21px] h-0.5 bg-[#C89B3C]"
+                    className="absolute inset-x-0 bottom-0 h-0.5 bg-[#C89B3C]"
                   />
                 )}
               </a>
@@ -124,7 +162,7 @@ export function Navbar({
           initial={{ opacity: 0, y: -6 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
-          className="md:hidden border-t border-slate-200 bg-white px-4 py-4 space-y-2"
+          className="md:hidden border-t border-slate-200 bg-white px-4 py-4 space-y-2 shadow-lg"
         >
           <nav aria-label="قائمة الجوال" className="flex flex-col gap-1">
             {NAV_ITEMS.map((item) => {
@@ -132,7 +170,7 @@ export function Navbar({
               return (
                 <a
                   key={item.id}
-                  href={`#${item.id}`}
+                  href={ROUTE_PATHS[item.id]}
                   onClick={(e) => {
                     e.preventDefault();
                     handleSelect(item.id);

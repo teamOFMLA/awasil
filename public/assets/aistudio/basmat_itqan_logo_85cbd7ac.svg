@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">بصمة إتقان - BASMAT ITQAN</title>
+  <desc id="desc">شعار هندسي ذهبي وأبيض لشركة بصمة إتقان لخدمات العزل المائي والحراري.</desc>
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F5D18A"/>
+      <stop offset=".48" stop-color="#D9A34F"/>
+      <stop offset="1" stop-color="#B97824"/>
+    </linearGradient>
+    <linearGradient id="white" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#DCE3EC"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Geometric building mark -->
+  <g transform="translate(0,-5)" stroke-linejoin="miter">
+    <!-- left building -->
+    <path d="M285 390 L285 265 L405 195 L405 390 Z" fill="url(#white)"/>
+    <path d="M405 195 L490 245 L490 390 L405 390 Z" fill="url(#gold)"/>
+    <path d="M310 285 L380 245 L380 263 L310 304 Z" fill="#14223A"/>
+    <path d="M310 326 L380 286 L380 304 L310 345 Z" fill="#14223A"/>
+    <path d="M310 367 L380 327 L380 345 L310 386 Z" fill="#14223A"/>
+    <!-- central tower -->
+    <path d="M490 390 L490 160 L600 85 L710 160 L710 390 L620 340 L600 350 L580 340 Z" fill="url(#white)"/>
+    <path d="M600 85 L710 160 L710 390 L620 340 L600 350 Z" fill="url(#gold)"/>
+    <path d="M650 174 L678 193 L678 302 L650 286 Z" fill="#14223A"/>
+    <path d="M690 201 L704 211 L704 317 L690 309 Z" fill="#14223A"/>
+    <!-- roof / protection sweep -->
+    <path d="M235 470 L600 335 L785 445 L752 466 L600 376 L310 486 Z" fill="url(#white)"/>
+    <path d="M620 338 C790 340 890 390 910 458 C925 510 855 548 710 555 C850 533 884 486 855 445 C822 397 735 370 620 358 Z" fill="url(#gold)"/>
+    <!-- water drop -->
+    <path d="M600 408 C578 444 555 469 555 495 C555 523 575 543 600 543 C625 543 645 523 645 495 C645 469 622 444 600 408 Z" fill="none" stroke="url(#white)" stroke-width="9"/>
+  </g>
+
+  <!-- Arabic brand name -->
+  <text x="600" y="690" text-anchor="middle" direction="rtl" unicode-bidi="plaintext"
+        font-family="'IBM Plex Sans Arabic','Noto Sans Arabic','Arial',sans-serif" font-size="104" font-weight="800" fill="url(#white)">بصمة <tspan fill="url(#gold)">إتقان</tspan></text>
+  <!-- English name -->
+  <g fill="url(#white)" font-family="Arial, sans-serif" font-size="38" font-weight="400" letter-spacing="13">
+    <text x="600" y="755" text-anchor="middle">BASMAT ITQAN</text>
+  </g>
+  <path d="M235 744 H350 M850 744 H965" stroke="url(#gold)" stroke-width="5"/>
+  <!-- descriptor -->
+  <text x="600" y="825" text-anchor="middle" direction="rtl" unicode-bidi="plaintext"
+        font-family="'IBM Plex Sans Arabic','Noto Sans Arabic','Arial',sans-serif" font-size="39" font-weight="400" fill="url(#white)">لخدمات العزل المائي والحراري</text>
+</svg>
