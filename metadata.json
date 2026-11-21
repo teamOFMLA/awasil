@@ -1,0 +1,8 @@
+{
+  "name": "بصمة إتقان للعوازل | جدة ومكة المكرمة",
+  "description": "شركة بصمة إتقان المتخصصة في أنظمة العزل المائي والحراري وعزل الفوم والهناجر والخزانات في جدة ومكة المكرمة بضمان يصل إلى 10 سنوات.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
